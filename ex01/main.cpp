@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
     std::string expression = argv[1];
     RPN rpn(expression);
-    int result = rpn.evaluate();
+    double result = rpn.evaluate();
     std::cout << result << std::endl;
     return 0;
 }

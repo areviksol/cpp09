@@ -34,8 +34,13 @@ bool RPN:: isOperator(const std::string &token)
 
 double RPN:: performOperation(double operand1, double operand2, const std::string &op)
 {
+    std::cout << "operand 1 is >>>>>>" << operand1 << std::endl;
+    std::cout << "operand 2 is >>>>>>" << operand2 << std::endl;
     if (op == "+")
+    {
+        std::cout << "result of operation is " << operand1 + operand2 << std::endl;
         return operand1 + operand2;
+    }
     else if (op == "-")
         return operand1 - operand2;
     else if (op == "*")
@@ -58,8 +63,10 @@ bool RPN::check_zero(std::string s)
 {
     double flag = 0;
     double flag2 = 0;
+
     for (std::string::iterator it = s.begin(), end = s.end(); it != end; ++it)
     {
+
         if (flag2 == 1 && *it == '.')
         {
             return false;
@@ -97,6 +104,7 @@ bool RPN::check_zero(std::string s)
         }
         if (isdigit(*it) == 0 && (*it != 'e' || *it != 'E' || *it != 'f' || *it != 'F' || *it != '.'))
         {
+            std::cout << "here" << *it <<std::endl;
             return false;
         }
         flag = 1;
@@ -106,8 +114,7 @@ bool RPN::check_zero(std::string s)
 
 bool RPN::valid(std::string token)
 {
-    double rate = std::atof(token.c_str());
-    if (check_zero(token) || errno != ERANGE)
+    if (check_zero(token) && errno != ERANGE)
     {
         return true;
     }
@@ -121,20 +128,20 @@ double RPN:: evaluate()
     std::string token;
     while (iss >> token)
     {
+        std::cout << "Token is " << token << std::endl;
         if (!isOperator(token))
         {
-            double num;
-            if (!(std::istringstream(token) >> num))
-            {
-                std::cout << "Error" << std::endl;
-                exit(1);
+
+            double num = std::atof(token.c_str());
+            if(num <= -1 || num > 10){
+                throw std::runtime_error("Error: Operands must be numbers at range 1-10");
             }
+            std::cout << "Number is " << num << std::endl;
             if(!valid(token)){
                 while (!operands.empty()) {
                     operands.pop();
                 }                
                 throw std::runtime_error("Error: Operands must be numbers");
-                exit(1);
             }
             operands.push(num);
         }
@@ -151,9 +158,6 @@ double RPN:: evaluate()
             operands.pop();
             try{
                 double result = performOperation(operand1, operand2, token);
-                if(operand1 >= 10 || operand2 >= 10) {
-                    throw std::runtime_error("Error"); 
-                }
                 operands.push(result);
             }catch(std::runtime_error &e){
                 std::cout << e.what() << std::endl;

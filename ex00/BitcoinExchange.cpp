@@ -69,35 +69,42 @@ bool BitcoinExchange::isValidDateFormat(const std::string &dateStr)
     return true;
 }
 
-bool BitcoinExchange::isLeapYear(int year) {
+bool BitcoinExchange::isLeapYear(int year)
+{
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-bool BitcoinExchange::isValidDate(const std::string& dateStr) {
+bool BitcoinExchange::isValidDate(const std::string &dateStr)
+{
     int year = 0, month = 0, day = 0;
 
     char delimiter;
 
     // Use a stringstream to parse the date string
     std::istringstream ss(dateStr);
-    // std::cout << "Year>>" << year <<std::endl;
-    // std::cout << "Month>>" << month <<std::endl;
-    // std::cout << "Day>>" << day <<std::endl;
 
     ss >> year >> delimiter >> month >> delimiter >> day;
 
-    if (ss.eof() && ss.fail() == false && ss.bad() == false && delimiter == '-') {
-        if (year >= 0 && month >= 1 && month <= 12 && day >= 1) {
+    if (ss.eof() && ss.fail() == false && ss.bad() == false && delimiter == '-')
+    {
+        if (year >= 0 && month >= 1 && month <= 12 && day >= 1)
+        {
             int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
             // Handle leap years for February
-            if (month == 2) {
-                if (isLeapYear(year)) {
+            if (month == 2)
+            {
+                if (isLeapYear(year))
+                {
                     return day <= 29;
-                } else {
+                }
+                else
+                {
                     return day <= 28;
                 }
-            } else {
+            }
+            else
+            {
                 return day <= daysInMonth[month];
             }
         }
@@ -105,7 +112,6 @@ bool BitcoinExchange::isValidDate(const std::string& dateStr) {
 
     return false;
 }
-
 
 bool BitcoinExchange::check_zero(std::string s)
 {
@@ -231,7 +237,8 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
         {
             flag = 1;
             continue;
-        } else if(flag == 0){
+        }else if (flag == 0)
+        {
             std::cerr << "Wtong file " << std::endl;
             exit(1);
         }
@@ -243,7 +250,12 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
         }
         try
         {
-            double value = std::stod(valueStr);
+            double value = std::atof(valueStr.c_str());
+            if (!(check_zero(trimString(valueStr, chars_to_trim)) && errno != ERANGE))
+            {
+                std::cerr << "Value must be a valid number " << std::endl;
+                continue;
+            }
 
             if (value < 1.0 || value > 1000.0)
             {
