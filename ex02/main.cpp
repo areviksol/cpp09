@@ -21,7 +21,7 @@ std::string &trimString(std::string &str, const std::string &chars)
 }
 
 template <typename Container>
-void printContainerData(const std::string &containerType, const Container &data, double duration) {
+void prdoubleContainerData(const std::string &containerType, const Container &data, double duration) {
     std::cout << "After: ";
     for (typename Container::const_iterator it = data.begin(); it != data.end(); ++it) {
         std::cout << *it << " ";
@@ -47,25 +47,25 @@ int main(int argc, char **argv) {
         std::string expression = trimString(result, chars_to_trim);
         try {
             PmergeMe p(expression);
-            std::vector<int> sorted_vector;
-            std::deque<int> sorted_deque;
+            std::vector<double> sorted_vector;
+            std::deque<double> sorted_deque;
 
             // Measure time for vector
             clock_t start_time = clock();
-            sorted_vector = p.ford_johnson_insertion_sort_vector();
+            p.fint_johnson_sort_vector();
             clock_t end_time = clock();
             double vector_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
 
-            // Measure time for deque
+            // // Measure time for deque
             start_time = clock();
-            sorted_deque = p.ford_johnson_insertion_sort_dequeue();
+            p.fint_johnson_sort_vector();
             end_time = clock();
             double deque_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
 
             std::cout << "Before: " << expression << std::endl;
 
-            printContainerData("std::vector", sorted_vector, vector_time);
-            printContainerData("std::deque", sorted_deque, deque_time);
+            prdoubleContainerData("std::vector", p.getVectorData(), vector_time);
+            prdoubleContainerData("std::deque", p.getDequeData(), deque_time);
         } catch (std::exception &e) {
             std::cerr << "Error" << std::endl;
         }

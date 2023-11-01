@@ -63,6 +63,7 @@
         "streambuf": "cpp",
         "string_view": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "cmath": "cpp"
     }
 }

@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include <cmath>
 
 PmergeMe::PmergeMe() {}
 
@@ -30,8 +31,8 @@ PmergeMe::~PmergeMe() {}
 
 bool PmergeMe::check_zero(std::string s)
 {
-    int flag = 0;
-    int flag2 = 0;
+    double flag = 0;
+    double flag2 = 0;
     for (std::string::iterator it = s.begin(), end = s.end(); it != end; ++it)
     {
         if (flag2 == 1 && *it == '.')
@@ -100,182 +101,131 @@ void PmergeMe::validation_and_save()
         }
     }
 }
-// dequeue
-std::deque<int> PmergeMe::insertion_sort_dequeue(std::deque<int> data)
-{
-    for (std::deque<int>::size_type i = 1; i < data.size(); i++)
-    {
-        int key = data[i];
-        int j = i - 1;
 
-        while (j >= 0 && data[j] > key)
-        {
-            data[j + 1] = data[j];
-            j--;
-        }
+// double PmergeMe::binary_search(std::vector<double>& arr, size_t low, size_t high, double x)
+// {
+//     while (low <= high) {
+//         size_t mid = (low + high) / 2;
+//         if (arr[mid] == x) {
+//             return mid;
+//         } else if (arr[mid] > x) {
+//             high = mid - 1;
+//         } else {
+//             low = mid + 1;
+//         }
+//     }
+//     return low;
+// }
 
-        data[j + 1] = key;
-    }
+// double PmergeMe::binary_search(std::deque<double>& arr, size_t low, size_t high, double x)
+// {
+//     while (low <= high) {
+//         size_t mid = (low + high) / 2;
+//         if (arr[mid] == x) {
+//             return mid;
+//         } else if (arr[mid] > x) {
+//             high = mid - 1;
+//         } else {
+//             low = mid + 1;
+//         }
+//     }
+//     return low;
+// }
 
-    return data;
-}
-
-std::deque<int> PmergeMe::merge_dequeue(std::deque<int> left, std::deque<int> right)
-{
-    std::deque<int> result;
-
-    std::deque<int>::iterator i = left.begin();
-    std::deque<int>::iterator j = right.begin();
-
-    while (i != left.end() && j != right.end())
-    {
-        if (*i < *j)
-        {
-            result.push_back(*i);
-            i++;
-        }
-        else
-        {
-            result.push_back(*j);
-            j++;
-        }
-    }
-
-    while (i != left.end())
-    {
-        result.push_back(*i);
-        i++;
-    }
-
-    while (j != right.end())
-    {
-        result.push_back(*j);
-        j++;
-    }
-
-    return result;
-}
-std::deque<int> PmergeMe::ford_johnson_insertion_sort_dequeue()
-{
-    int n = deque_data.size();
-
-    std::deque<int> result;
-    for (int i = 0; i < n; i++)
-    {
-        std::deque<int> subarray;
-        subarray.push_back(deque_data[i]);
-
-        for (int j = i + 1; j < n; j++)
-        {
-            if (deque_data[j] < deque_data[i])
-            {
-                subarray.push_back(deque_data[j]);
-                i = j;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        subarray = insertion_sort_dequeue(subarray);
-        result = merge_dequeue(result, subarray);
-    }
-
-    return result;
-}
-
-// vector
-std::vector<int> PmergeMe::insertion_sort_vector(std::vector<int> data)
-{
-    for (std::vector<int>::size_type i = 1; i < data.size(); i++)
-    {
-        int key = data[i];
-        int j = i - 1;
-
-        while (j >= 0 && data[j] > key)
-        {
-            data[j + 1] = data[j];
-            j--;
-        }
-
-        data[j + 1] = key;
-    }
-
-    return data;
-}
-
-std::vector<int> PmergeMe::merge_vector(std::vector<int> left, std::vector<int> right)
-{
-    std::vector<int> result;
-
-    std::vector<int>::iterator i = left.begin();
-    std::vector<int>::iterator j = right.begin();
-
-    while (i != left.end() && j != right.end())
-    {
-        if (*i < *j)
-        {
-            result.push_back(*i);
-            i++;
-        }
-        else
-        {
-            result.push_back(*j);
-            j++;
-        }
-    }
-
-    while (i != left.end())
-    {
-        result.push_back(*i);
-        i++;
-    }
-
-    while (j != right.end())
-    {
-        result.push_back(*j);
-        j++;
-    }
-
-    return result;
-}
-
-std::vector<int> PmergeMe::ford_johnson_insertion_sort_vector()
-{
-    int n = vector_data.size();
-
-    std::vector<int> result;
-    for (int i = 0; i < n; i++)
-    {
-        std::vector<int> subarray;
-        subarray.push_back(vector_data[i]);
-
-        for (int j = i + 1; j < n; j++)
-        {
-            if (vector_data[j] < vector_data[i])
-            {
-                subarray.push_back(vector_data[j]);
-                i = j;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        subarray = insertion_sort_vector(subarray);
-        result = merge_vector(result, subarray);
-    }
-
-    return result;
-}
-
-std::vector<int> PmergeMe::getVectorData() const
+std::vector<double> PmergeMe::getVectorData() const
 {
     return vector_data;
 }
-std::deque<int> PmergeMe::getDequeData() const
+std::deque<double> PmergeMe::getDequeData() const
 {
     return deque_data;
 }
+void PmergeMe::fint_johnson_sort(std::vector<double> &data, size_t low, size_t high)
+{
+    if (high - low <= 1)
+    {
+        return; // Base case, already sorted
+    }
+
+    size_t mid = (low + high) / 2;
+    std::vector<double> left(data.begin() + low, data.begin() + mid);
+    std::vector<double> right(data.begin() + mid, data.begin() + high);
+
+    fint_johnson_sort(left, 0, left.size());
+    fint_johnson_sort(right, 0, right.size());
+
+    size_t i = 0, j = 0, k = low;
+
+    while (i < left.size() && j < right.size())
+    {
+        if (left[i] < right[j])
+        {
+            data[k++] = left[i++];
+        }
+        else
+        {
+            data[k++] = right[j++];
+        }
+    }
+
+    while (i < left.size())
+    {
+        data[k++] = left[i++];
+    }
+
+    while (j < right.size())
+    {
+        data[k++] = right[j++];
+    }
+}
+
+void PmergeMe::fint_johnson_sort_vector()
+{
+    fint_johnson_sort(vector_data, 0, vector_data.size());
+}
+
+void PmergeMe::fint_johnson_sort_deque()
+{
+    fint_johnson_sort(deque_data, 0, deque_data.size());
+}
+
+
+void PmergeMe::fint_johnson_sort(std::deque<double> &data, size_t low, size_t high)
+{
+    if (high - low <= 1)
+    {
+        return; // Base case, already sorted
+    }
+
+    size_t mid = (low + high) / 2;
+    std::deque<double> left(data.begin() + low, data.begin() + mid);
+    std::deque<double> right(data.begin() + mid, data.begin() + high);
+
+    fint_johnson_sort(left, 0, left.size());
+    fint_johnson_sort(right, 0, right.size());
+
+    size_t i = 0, j = 0, k = low;
+
+    while (i < left.size() && j < right.size())
+    {
+        if (left[i] < right[j])
+        {
+            data[k++] = left[i++];
+        }
+        else
+        {
+            data[k++] = right[j++];
+        }
+    }
+
+    while (i < left.size())
+    {
+        data[k++] = left[i++];
+    }
+
+    while (j < right.size())
+    {
+        data[k++] = right[j++];
+    }
+}
+

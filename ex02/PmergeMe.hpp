@@ -6,6 +6,7 @@
 #include <deque>
 #include <sstream>
 #include <ctype.h>
+#include <cmath>
 
 class PmergeMe
 {
@@ -20,22 +21,24 @@ public:
     bool check_zero(std::string s);
 
     //dequeue
-    std::deque<int> insertion_sort_dequeue(std::deque<int> data);
-    std::deque<int> merge_dequeue(std::deque<int> left, std::deque<int> right);
-    std::deque<int> ford_johnson_insertion_sort_dequeue();
+
 
     //vector
-    std::vector<int> insertion_sort_vector(std::vector<int> data);
-    std::vector<int> merge_vector(std::vector<int> left, std::vector<int> right);
-    std::vector<int> ford_johnson_insertion_sort_vector();
-
+    void fint_johnson_sort_vector();
+     void fint_johnson_sort_deque();
     //getters
-    std::vector<int> getVectorData() const;
-    std::deque<int> getDequeData() const;
+    std::vector<double> getVectorData() const;
+    std::deque<double> getDequeData() const;
+
+
 private:
     std::string expression;
-    std::vector<int> vector_data;
-    std::deque<int> deque_data;
+    std::vector<double> vector_data;
+    std::deque<double> deque_data;
+    void fint_johnson_sort(std::vector<double> &data, size_t low, size_t high);
+    void fint_johnson_sort(std::deque<double>& data, size_t low, size_t high);
+
 };
 
 #endif
+
