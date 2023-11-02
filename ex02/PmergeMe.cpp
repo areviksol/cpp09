@@ -102,36 +102,6 @@ void PmergeMe::validation_and_save()
     }
 }
 
-// double PmergeMe::binary_search(std::vector<double>& arr, size_t low, size_t high, double x)
-// {
-//     while (low <= high) {
-//         size_t mid = (low + high) / 2;
-//         if (arr[mid] == x) {
-//             return mid;
-//         } else if (arr[mid] > x) {
-//             high = mid - 1;
-//         } else {
-//             low = mid + 1;
-//         }
-//     }
-//     return low;
-// }
-
-// double PmergeMe::binary_search(std::deque<double>& arr, size_t low, size_t high, double x)
-// {
-//     while (low <= high) {
-//         size_t mid = (low + high) / 2;
-//         if (arr[mid] == x) {
-//             return mid;
-//         } else if (arr[mid] > x) {
-//             high = mid - 1;
-//         } else {
-//             low = mid + 1;
-//         }
-//     }
-//     return low;
-// }
-
 std::vector<double> PmergeMe::getVectorData() const
 {
     return vector_data;
@@ -140,92 +110,169 @@ std::deque<double> PmergeMe::getDequeData() const
 {
     return deque_data;
 }
-void PmergeMe::fint_johnson_sort(std::vector<double> &data, size_t low, size_t high)
+
+void PmergeMe::insert(std::deque<double> &nums, std::deque<double> b)
 {
-    if (high - low <= 1)
+    int n = 0;
+    int power = 0;
+    size_t start_index = 0;
+    size_t end_index = 0;
+
+    for (size_t i = 0; i < b.size();)
     {
-        return; // Base case, already sorted
-    }
+        ++power;
 
-    size_t mid = (low + high) / 2;
-    std::vector<double> left(data.begin() + low, data.begin() + mid);
-    std::vector<double> right(data.begin() + mid, data.begin() + high);
+        n = pow(2, power) - n;
 
-    fint_johnson_sort(left, 0, left.size());
-    fint_johnson_sort(right, 0, right.size());
+        start_index += n;
 
-    size_t i = 0, j = 0, k = low;
+        end_index = start_index - n;
 
-    while (i < left.size() && j < right.size())
-    {
-        if (left[i] < right[j])
+        if (start_index > b.size())
+            start_index = b.size();
+
+        for (size_t j = start_index - 1; j >= end_index;)
         {
-            data[k++] = left[i++];
+    std::deque<double>::iterator it = std::upper_bound(nums.begin(), nums.end(), b[j]);
+    nums.insert(it, b[j]);
+    ++i;
+    if (j == 0)
+        break;
+    --j;
         }
-        else
-        {
-            data[k++] = right[j++];
-        }
-    }
-
-    while (i < left.size())
-    {
-        data[k++] = left[i++];
-    }
-
-    while (j < right.size())
-    {
-        data[k++] = right[j++];
     }
 }
 
-void PmergeMe::fint_johnson_sort_vector()
+void PmergeMe::insertion_sort(std::deque<double> &nums)
 {
-    fint_johnson_sort(vector_data, 0, vector_data.size());
+    for (size_t i = 1; i < nums.size(); ++i)
+    {
+        int j = i;
+        while (j > 0 && nums[j] < nums[j - 1])
+        {
+    std::swap(nums[j], nums[j - 1]);
+    j--;
+        }
+    }
+}
+
+void PmergeMe::johnson_sort_deque(std::deque<double> &nums)
+{
+    double unpaired;
+    std::deque<double> a, b;
+    size_t size = nums.size() / 2 + (nums.size() % 2);
+
+    unpaired = ((nums.size() % 2 == 0) ? -1 : nums[nums.size() - 1]);
+
+    if (nums.size() == 2 || nums.size() == 3)
+    {
+        insertion_sort(nums);
+        return;
+    }
+
+    for (size_t i = 0; i < size; ++i)
+    {
+        if (i != size - 1 || nums.size() % 2 == 0)
+        {
+    double n = nums[i * 2], m = nums[i * 2 + 1];
+    if (n > m)
+        std::swap(n, m);
+    a.push_back(m);
+    b.push_back(n);
+        }
+    }
+
+    if (unpaired != -1)
+        b.push_back(unpaired);
+
+    johnson_sort_deque(a);
+    johnson_sort_deque(b);
+
+    insert(a, b);
+    nums = a;
 }
 
 void PmergeMe::fint_johnson_sort_deque()
 {
-    fint_johnson_sort(deque_data, 0, deque_data.size());
+    johnson_sort_deque(deque_data);
 }
 
-
-void PmergeMe::fint_johnson_sort(std::deque<double> &data, size_t low, size_t high)
+void PmergeMe::fint_johnson_sort_vector()
 {
-    if (high - low <= 1)
-    {
-        return; // Base case, already sorted
-    }
-
-    size_t mid = (low + high) / 2;
-    std::deque<double> left(data.begin() + low, data.begin() + mid);
-    std::deque<double> right(data.begin() + mid, data.begin() + high);
-
-    fint_johnson_sort(left, 0, left.size());
-    fint_johnson_sort(right, 0, right.size());
-
-    size_t i = 0, j = 0, k = low;
-
-    while (i < left.size() && j < right.size())
-    {
-        if (left[i] < right[j])
-        {
-            data[k++] = left[i++];
-        }
-        else
-        {
-            data[k++] = right[j++];
-        }
-    }
-
-    while (i < left.size())
-    {
-        data[k++] = left[i++];
-    }
-
-    while (j < right.size())
-    {
-        data[k++] = right[j++];
-    }
+    johnson_sort_vector(vector_data);
 }
+
+    void PmergeMe::insert(std::vector<double> &nums, std::vector<double> b)
+    {
+        int n = 0;
+        int power = 0;
+        size_t start_index = 0;
+        size_t end_index = 0;
+
+        for (size_t i = 0; i < b.size();) {
+            ++power;
+
+            n = static_cast<int>(std::pow(2, power)) - n;
+
+            start_index += n;
+
+            end_index = start_index - n;
+
+            if (start_index > b.size())
+                start_index = b.size();
+
+            for (size_t j = start_index - 1; j >= end_index;) {
+                std::vector<double>::iterator it = std::upper_bound(nums.begin(), nums.end(), b[j]);
+                nums.insert(it, b[j]);
+                ++i;
+                if (j == 0)
+                    break;
+                --j;
+            }
+        }
+    }
+
+    void PmergeMe::insertion_sort(std::vector<double> &nums)
+    {
+        for (size_t i = 1; i < nums.size(); ++i) {
+            int j = i;
+            while (j > 0 && nums[j] < nums[j - 1]) {
+                std::swap(nums[j], nums[j - 1]);
+                j--;
+            }
+        }
+    }
+
+    void PmergeMe::johnson_sort_vector(std::vector<double> &nums)
+    {
+        double unpaired;
+        std::vector<double> a, b;
+        size_t size = nums.size() / 2 + (nums.size() % 2);
+
+        unpaired = ((nums.size() % 2 == 0) ? -1 : nums[nums.size() - 1]);
+
+        if (nums.size() == 2 || nums.size() == 3) {
+            insertion_sort(nums);
+            return;
+        }
+
+        for (size_t i = 0; i < size; ++i) {
+            if (i != size - 1 || nums.size() % 2 == 0) {
+                double n = nums[i * 2], m = nums[i * 2 + 1];
+                if (n > m)
+                    std::swap(n, m);
+                a.push_back(m);
+                b.push_back(n);
+            }
+        }
+
+        if (unpaired != -1)
+            b.push_back(unpaired);
+
+        johnson_sort_vector(a);
+        johnson_sort_vector(b);
+
+        insert(a, b);
+        nums = a;
+    }
 

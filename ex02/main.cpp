@@ -21,9 +21,11 @@ std::string &trimString(std::string &str, const std::string &chars)
 }
 
 template <typename Container>
-void prdoubleContainerData(const std::string &containerType, const Container &data, double duration) {
+void prdoubleContainerData(const std::string &containerType, const Container &data, double duration)
+{
     std::cout << "After: ";
-    for (typename Container::const_iterator it = data.begin(); it != data.end(); ++it) {
+    for (typename Container::const_iterator it = data.begin(); it != data.end(); ++it)
+    {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
@@ -32,33 +34,36 @@ void prdoubleContainerData(const std::string &containerType, const Container &da
               << std::fixed << std::setprecision(5) << duration * 1e6 << " us" << std::endl;
 }
 
-
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     (void)argc;
-    if (argc > 1) {
+    if (argc > 1)
+    {
         std::string chars_to_trim = "\n\t\v\f\r ";
         std::string result;
         argv++;
-        while (*argv) {
+        while (*argv)
+        {
             result += *argv;
             result += " ";
             argv++;
         }
         std::string expression = trimString(result, chars_to_trim);
-        try {
+        try
+        {
             PmergeMe p(expression);
             std::vector<double> sorted_vector;
             std::deque<double> sorted_deque;
-
             // Measure time for vector
             clock_t start_time = clock();
             p.fint_johnson_sort_vector();
+            std::cout << "meow ;" << std::endl;
             clock_t end_time = clock();
             double vector_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
 
-            // // Measure time for deque
+            // Measure time for deque
             start_time = clock();
-            p.fint_johnson_sort_vector();
+            p.fint_johnson_sort_deque();
             end_time = clock();
             double deque_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
 
@@ -66,7 +71,9 @@ int main(int argc, char **argv) {
 
             prdoubleContainerData("std::vector", p.getVectorData(), vector_time);
             prdoubleContainerData("std::deque", p.getDequeData(), deque_time);
-        } catch (std::exception &e) {
+        }
+        catch (std::exception &e)
+        {
             std::cerr << "Error" << std::endl;
         }
     }
