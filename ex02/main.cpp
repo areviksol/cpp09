@@ -36,32 +36,35 @@ void prdoubleContainerData(const std::string &containerType, const Container &da
 
 int main(int argc, char **argv)
 {
-    (void)argc;
-    if (argc > 1)
+    if (argc >= 1)
     {
         std::string chars_to_trim = "\n\t\v\f\r ";
         std::string result;
-        argv++;
+        ++argv;
         while (*argv)
         {
-            result += *argv;
             result += " ";
-            argv++;
+            result += *argv;
+            ++argv;
         }
+
         std::string expression = trimString(result, chars_to_trim);
+
         try
         {
             PmergeMe p(expression);
             std::vector<double> sorted_vector;
             std::deque<double> sorted_deque;
             // Measure time for vector
+            if(p.getVectorData().size() == 0) {
+                std::cerr << "empty data" << std::endl;
+                return 1;
+            }
             clock_t start_time = clock();
             p.fint_johnson_sort_vector();
-            std::cout << "meow ;" << std::endl;
             clock_t end_time = clock();
             double vector_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC;
 
-            // Measure time for deque
             start_time = clock();
             p.fint_johnson_sort_deque();
             end_time = clock();

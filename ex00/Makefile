@@ -6,7 +6,7 @@ NAME =  btc
 
 CC = c++
 
-FLAGS = -Wall -Wextra  -Werror -std=c++98
+FLAGS = -Wall -Wextra  -Werror -std=c++98 -fsanitize=address -g
 
 #Colors:
 GREEN		=	\e[92;5;118m
@@ -51,3 +51,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re

@@ -21,27 +21,30 @@ public:
     bool check_zero(std::string s);
 
     // dequeue
-    void insert(std::deque<double> &nums, std::deque<double> b);
-    void insertion_sort(std::deque<double>& nums);
-    void johnson_sort_deque(std::deque<double>& nums);
+    void insert(std::deque<int> &nums, std::deque<int> b);
+    void insertion_sort(std::deque<int>& nums);
+    void johnson_sort_deque(std::deque<int>& nums);
     void fint_johnson_sort_deque();
-
+    std::deque<int>::iterator customBinarySearchInsertion(std::deque<int>& sortedSequence, int elem);
+    
     // vector
-    void insert(std::vector<double> &nums, std::vector<double> b);
-    void insertion_sort(std::vector<double> &nums);
-    void johnson_sort_vector(std::vector<double> &nums);
+    void insert(std::vector<int> &nums, std::vector<int> b);
+    void insertion_sort(std::vector<int> &nums);
+    void johnson_sort_vector(std::vector<int> &nums);
     void fint_johnson_sort_vector();
+    std::vector<int>::iterator customBinarySearchInsertion(std::vector<int>& sortedSequence, int elem);
+
 
     // getters
-    std::vector<double> getVectorData() const;
-    std::deque<double> getDequeData() const;
+    std::vector<int> getVectorData() const;
+    std::deque<int> getDequeData() const;
 
 private:
     std::string expression;
-    std::vector<double> vector_data;
-    std::deque<double> deque_data;
-    void fint_johnson_sort(std::vector<double> &data, size_t low, size_t high);
-    void fint_johnson_sort(std::deque<double> &data, size_t low, size_t high);
+    std::vector<int> vector_data;
+    std::deque<int> deque_data;
+    void fint_johnson_sort(std::vector<int> &data, size_t low, size_t high);
+    void fint_johnson_sort(std::deque<int> &data, size_t low, size_t high);
 };
 
 #endif

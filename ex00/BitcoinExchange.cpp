@@ -91,7 +91,6 @@ bool BitcoinExchange::isValidDate(const std::string &dateStr)
         {
             int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-            // Handle leap years for February
             if (month == 2)
             {
                 if (isLeapYear(year))
@@ -222,7 +221,7 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
     while (std::getline(file, line))
     {
         size_t found = line.find("|");
-        if (line.empty())
+        if (trimString(line, chars_to_trim).empty())
         {
             continue;
         }
@@ -233,7 +232,7 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
         }
         std::string date = line.substr(0, found);
         std::string valueStr = line.substr(found + 1);
-        if (trimString(date, chars_to_trim) == "data" && trimString(valueStr, chars_to_trim) == "value" && flag == 0)
+        if (trimString(date, chars_to_trim) == "date" && trimString(valueStr, chars_to_trim) == "value" && flag == 0)
         {
             flag = 1;
             continue;
@@ -257,9 +256,9 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
                 continue;
             }
 
-            if (value < 1.0 || value > 1000.0)
+            if (value < 0.0 || value > 1000.0)
             {
-                std::cerr << "Error: value must be between 1 and 1000." << std::endl;
+                std::cerr << "Error: value must be between 0 and 1000." << std::endl;
                 continue;
             }
 

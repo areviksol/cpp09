@@ -34,13 +34,8 @@ bool RPN:: isOperator(const std::string &token)
 
 double RPN:: performOperation(double operand1, double operand2, const std::string &op)
 {
-    std::cout << "operand 1 is >>>>>>" << operand1 << std::endl;
-    std::cout << "operand 2 is >>>>>>" << operand2 << std::endl;
     if (op == "+")
-    {
-        std::cout << "result of operation is " << operand1 + operand2 << std::endl;
         return operand1 + operand2;
-    }
     else if (op == "-")
         return operand1 - operand2;
     else if (op == "*")
@@ -61,53 +56,18 @@ double RPN:: performOperation(double operand1, double operand2, const std::strin
 
 bool RPN::check_zero(std::string s)
 {
-    double flag = 0;
-    double flag2 = 0;
-
+    int flag = 0;
     for (std::string::iterator it = s.begin(), end = s.end(); it != end; ++it)
     {
-
-        if (flag2 == 1 && *it == '.')
+        if (*it == '+' && flag == 0)
         {
-            return false;
-        }
-        if (isdigit(*it) == 0)
-        {
-            if ((*it == 'E' || *it == 'e') && flag == 1)
-            {
-                if (!isdigit(*(it + 1)))
-                {
-                    return false;
-                }
-                continue;
-            }
-        }
-        if (isdigit(*it) == 0)
-        {
-            if ((*it == 'F' || *it == 'f') && flag == 1)
-            {
-                if (*(it + 1))
-                {
-                    return false;
-                }
-                continue;
-            }
-        }
-        if (isdigit(*it) == 0 && *it == '.')
-        {
-            flag2 = 1;
-            if (isdigit(*(it + 1)) == 0)
-            {
-                return false;
-            }
+            flag = 1;
             continue;
         }
-        if (isdigit(*it) == 0 && (*it != 'e' || *it != 'E' || *it != 'f' || *it != 'F' || *it != '.'))
+        if (isdigit(*it) == 0)
         {
-            std::cout << "here" << *it <<std::endl;
             return false;
         }
-        flag = 1;
     }
     return true;
 }
@@ -128,15 +88,13 @@ double RPN:: evaluate()
     std::string token;
     while (iss >> token)
     {
-        std::cout << "Token is " << token << std::endl;
         if (!isOperator(token))
         {
 
             double num = std::atof(token.c_str());
-            if(num <= -1 || num > 10){
-                throw std::runtime_error("Error: Operands must be numbers at range 1-10");
+            if(num < 0 || num >= 10){
+                throw std::runtime_error("Error: Operands must be numbers at range 0-9");
             }
-            std::cout << "Number is " << num << std::endl;
             if(!valid(token)){
                 while (!operands.empty()) {
                     operands.pop();

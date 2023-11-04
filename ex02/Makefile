@@ -6,7 +6,7 @@ NAME =  PmergeMe
 
 CC = c++
 
-FLAGS = -Werror -Wall -Wextra -std=c++98 
+FLAGS = -Werror -Wall -Wextra -std=c++98 -ggdb3
 
 #Colors:
 GREEN		=	\e[92;5;118m
@@ -31,3 +31,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
