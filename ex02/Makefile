@@ -6,7 +6,7 @@ NAME =  PmergeMe
 
 CC = c++
 
-FLAGS = -Werror -Wall -Wextra -std=c++98 -ggdb3
+FLAGS = -Werror -Wall -Wextra -std=c++98
 
 #Colors:
 GREEN		=	\e[92;5;118m
