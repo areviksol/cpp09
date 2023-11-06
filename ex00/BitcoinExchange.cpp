@@ -249,6 +249,10 @@ void BitcoinExchange::calculateBitcoinValue(const std::string &input_file)
         }
         try
         {
+            if(trimString(valueStr, chars_to_trim).empty()) {
+                std::cerr << "Value must be a valid number " << std::endl;
+                continue;
+            }
             double value = std::atof(valueStr.c_str());
             if (!(check_zero(trimString(valueStr, chars_to_trim)) && errno != ERANGE))
             {

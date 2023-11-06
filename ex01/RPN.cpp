@@ -99,7 +99,7 @@ double RPN:: evaluate()
                 while (!operands.empty()) {
                     operands.pop();
                 }                
-                throw std::runtime_error("Error: Operands must be numbers");
+                throw std::runtime_error("Error:");
             }
             operands.push(num);
         }
